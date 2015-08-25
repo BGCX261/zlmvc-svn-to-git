@@ -1,0 +1,25 @@
+#labels maven,tomcat
+设置项目tomcat路径
+我的项目名称是BQS，基于Maven管理
+C:\Program Files\Java\apache-tomcat-6.0.18\conf\Catalina\localhost添加BQS.xml
+可以指定加载之外的程序
+<Context crossContext="true" debug="5" docBase="E:\BQS\target\BQS"
+         path="/BQS " reloadable="true" workDir="work\Catalina\localhost\BQS ">
+</Context>
+
+或者放到server.xml中
+
+设置远程调试
+修改配置文件catalina.bat，startup.bat
+1. 在环境变量中添加 jpda_address=8000, 也可以加到startup.bat 文件@echo off下面如:set jpda_address=8000
+2. 打开catalina.bat，在文件中找到" set JPDA_TRANSPORT"，把它的值设为dt_socket
+3. 打开startup.bat, 在文件中找到"call "%EXECUTABLE%" start %CMD_LINE_ARGS%",
+改为" call "%EXECUTABLE%" jpda start %CMD_LINE_ARGS%",
+也就是在start前加jpda.
+4. 在eclipse debug中选择" Remote Java Application" ,新建一个批port为jpda_address的值,
+ 
+Tomcat中的设置的端口为8009，
+<Connector port="8009" protocol="HTTP/1.1" 
+               connectionTimeout="20000" 
+               redirectPort="8443" />
+使用的端口号是8009，设置断点，在eclipse中启动tomcat即可调试

@@ -1,0 +1,18 @@
+#labels struts2
+全局范围，包范围，action范围
+first:
+to add two files in your src directory
+basename_en_US.properties
+basename_en_US.properties
+second:
+全局的，在struts2中配置,
+<constant name="struts.i18n.resource" value="basename">
+jsp访问：
+  <s:text name="welcome"/>
+  <s:textfield name="realname" key="user">
+action中访问
+inherit form ActionSupport,use getText to get content
+ ActionContext.getContent.put("message",this.getText("welcome"));
+
+if your entironment is English,then you will see the English content
+ps:native2ascii source file.properties target file.properties

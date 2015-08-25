@@ -1,0 +1,4 @@
+#labels sns
+http://t.thinksns.com/index.php?app=home&mod=User&act=index
+
+http://www.thinksaas.cn/ask/

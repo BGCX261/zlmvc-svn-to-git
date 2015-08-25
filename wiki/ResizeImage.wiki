@@ -1,0 +1,18 @@
+{{{
+private void saveImage(File file, int width, int height, String path) {
+		try {
+			BufferedImage Bi = ImageIO.read(file);
+			Image middleImage = Bi.getScaledInstance(width, height,
+					Image.SCALE_DEFAULT);
+			BufferedImage tag = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB);
+			Graphics g = tag.getGraphics();
+			g.drawImage(middleImage, 0, 0, null);
+			g.dispose();
+			ImageIO.write(tag, "JPEG", new File(path));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+	}
+}}}

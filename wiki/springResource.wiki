@@ -1,0 +1,31 @@
+#labels spring
+@Resource 的作用相当于 @Autowired，只不过 @Autowired 按 byType 自动注入，面 @Resource 默认按 byName 自动注入罢了。@Resource 有两个属性是比较重要的，分别是 name 和 type，Spring 将 @Resource 注释的 name 属性解析为 Bean 的名字，而 type 属性则解析为 Bean 的类型。所以如果使用 name 属性，则使用 byName 的自动注入策略，而使用 type 属性时则使用 byType 自动注入策略。如果既不指定 name 也不指定 type 属性，这时将通过反射机制使用 byName 自动注入策略。
+
+Resource 注释类位于 Spring 发布包的 lib/j2ee/common-annotations.jar 类包中，因此在使用之前必须将其加入到项目的类库中。来看一个使用 @Resource 的例子：
+
+清单 16. 使用 @Resource 注释的 Boss.java
+
+package com.baobaotao;
+
+import javax.annotation.Resource;
+
+public class Boss {
+    // 自动注入类型为 Car 的 Bean
+    @Resource
+    private Car car;
+
+    // 自动注入 bean 名称为 office 的 Bean
+    @Resource(name = "office")
+    private Office office;
+}
+
+
+一般情况下，我们无需使用类似于 @Resource(type=Car.class) 的注释方式，因为 Bean 的类型信息可以通过 Java 反射从代码中获取。
+
+要让 JSR-250 的注释生效，除了在 Bean 类中标注这些注释外，还需要在 Spring 容器中注册一个负责处理这些注释的 BeanPostProcessor：
+
+<bean 
+  class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+
+
+CommonAnnotationBeanPostProcessor 实现了 BeanPostProcessor 接口，它负责扫描使用了 JSR-250 注释的 Bean，并对它们进行相应的操作。

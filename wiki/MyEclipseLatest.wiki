@@ -1,0 +1,17 @@
+#labels eclipse
+MyEclipse 8.x Latest
+
+Subscriber:MaYong
+Subscription Code:ZLR8ZO-655444-54678656985359684
+
+Subscriber:LauCheng     can -use
+Subscription Code:YLR8ZC-855550-6765665204902409
+
+Subscriber:accp
+Subscription Code:nLR8ZC-855550-6765855499710139
+
+Subscriber:Administrator
+Subscription Code:NLR8ZC-855550-6552685393219112
+
+Subscriber:accptech
+Subscription Code:nLR8ZC-855550-6765855429037911

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true"/>
+	<constant name="struts.action.extension" value="htm"/>
+	<constant name="struts.ui.theme" value="simple" />
+	<package name="default" extends="struts-default">
+		<interceptors>
+			<interceptor name="memberLoginVerifyInterceptor" class="com.note.common.MemberLoginVerifyInterceptor" />
+			
+			<interceptor-stack name="memberStack">
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="memberStack" />
+		
+		<global-results>
+	        <result name="login">pages/member/login.jsp</result>
+    	</global-results>
+	</package>
+	
+	<package name="scene" namespace="/scene" extends="default">
+		 <action name="sceneList" class="com.note.action.SceneAction" method="toSceneList">
+			<result name="success">scene_list.jsp</result>
+		</action>
+		<action name="sceneIndex" class="com.note.action.SceneAction" method="sceneIndex">
+			<result name="success">scene.jsp</result>
+		</action>
+		<action name="toAddScene" class="com.note.action.SceneAction" method="toAddScene">
+			<result name="success">add_scene.jsp</result>
+		</action>
+		<action name="saveScene" class="com.note.action.SceneAction" method="save">
+			<result name="success">add_scene.jsp</result>
+			<result name="input">add_scene.jsp</result>
+		</action>
+		
+		
+	</package>
+	
+
+	
+    
+</struts>

@@ -1,0 +1,403 @@
+@import url('reset.css');
+@import url('960.css');
+@import url('general.css');
+@import url(http://fonts.googleapis.com/css?family=Oswald);
+
+/*@import url('text.css');*/
+
+/*body {*/
+/*background: url(../img/frenchstucco.png);*/
+/*}*/
+
+.header-bar {
+    background: #2E9F54;
+    width: 100%;
+    height: 5px;
+    margin: 0 0 20px 0;
+}
+
+ul.nav {
+    margin: 10px 0 0 15px;
+}
+
+ul.nav li {
+    float: left;
+    display: block;
+    margin: 0 30px 0 0;
+    position: relative;
+}
+
+ul.nav li:hover {
+}
+
+ul.nav li a {
+    font-family: 微软雅黑, "Microsoft Yahei", Helvetica, Verdana, sans-serif;
+    display: block;
+    font-size: 16px;
+}
+
+ul.nav li .count {
+    color: #bbb;
+    font-size: 11px;
+    font-family: Arial, Verdana, sans-serif;
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+}
+
+.search {
+    margin: 15px 0 0 0;
+}
+
+/* Startup Slide */
+
+ul.startup-list li {
+    transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        -webkit-transition: all 0.4s;
+        -ms-transition: all 0.4s;
+        -o-transition: all 0.4s;
+    border: 1px solid #eee;
+    float: left;
+    width: 100px;
+    margin: 0 10px 0 0;
+    text-align: center;
+}
+
+
+ul.startup-list li:hover, ul.startup-list li.active {
+    border: 1px solid #bbb;
+}
+
+ul.startup-list li .desc a {
+    color: #999;
+    font-size: 12px;
+}
+
+.startup-pane {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin: 0 0 10px 0;
+    position: relative;
+    height: 125px;
+    overflow: hidden;
+}
+
+.startup-pane .pane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 125px;
+    overflow: hidden;
+    padding: 10px;
+    background: #fff;
+}
+
+.startup-pane .pane .screen {
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+.startup-pane .pane ul {
+}
+
+.startup-pane .pane h6 {
+    margin: 0;
+}
+
+/* News Splash */
+
+.news-splash {
+    width: 100%;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    margin: 15px 0;
+}
+
+.news-splash .splash div {
+    padding: 5px 5px 5px 10px;
+}
+
+.news-splash .icon {
+    float: left;
+    width: 5%;
+}
+
+.news-splash .icon img {
+    margin: 6px 0 0 10px;
+}
+
+.news-splash .splash {
+    width: 95%;
+}
+
+/* Startup List */
+
+.startup-latest-list li {
+    width: 50%;
+    float: left;
+    margin: 0 0 10px 0;
+    height: 90px;
+}
+
+.startup-latest-list li .screen {
+    float: left;
+    width: 38%;
+}
+
+.startup-latest-list li .desc {
+    float: left;
+    width: 62%;
+}
+
+.startup-left {
+    width: 30%;
+    float: left;
+}
+
+.startup-right {
+    width: 70%;
+    float: left;
+}
+
+.people-left {
+    width: 20%;
+    float: left;
+}
+
+.people-right {
+    width: 80%;
+    float: left;
+}
+
+.people-left .people-avatar {
+    width: 100px;
+    height: auto;
+}
+
+/* Comment List */
+
+ul.two-col-comment li .left {
+    float: left;
+    width: 20%;
+}
+
+ul.two-col-comment li .right {
+    float: left;
+    width: 80%;
+}
+
+ul.two-col-comment li {
+    border-bottom: 1px dashed #ddd;
+    padding: 0 0 10px 0;
+    height: 55px;
+}
+
+ul.one-col-comment li {
+    border-bottom: 1px dashed #ddd;
+    padding: 0 0 10px 0;
+    margin: 0 0 10px 0;
+}
+
+ul.one-col-comment li.owner {
+    border-bottom: 1px dashed #ccc;
+}
+
+ul.one-col-comment li .left {
+    float: left;
+    width: 10%;
+}
+
+ul.one-col-comment li .right {
+    float: left;
+    width: 90%;
+}
+
+/* Startup */
+ul.startup-sidebar li {
+    margin: 0 0 20px 0;
+}
+
+ul.startup-sidebar li .left {
+    float: left;
+    width: 40%;
+}
+
+ul.startup-sidebar li .right {
+    float: left;
+    width: 60%;
+}
+
+ul.startup-one-col {
+    margin: 0 0 20px 0;
+}
+
+ul.startup-one-col li {
+    margin: 0 0 15px 0;
+    padding: 0 0 15px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+ul.startup-one-col li .left {
+    float: left;
+    width: 30%;
+}
+
+ul.startup-one-col li .right {
+    float: left;
+    width: 70%;
+}
+
+ul.startuplist li {
+    margin: 0 0 15px 0;
+    padding: 0 0 15px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+ul.startuplist li img {
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+ul.people-one-col-grid li, ul.user-one-col-grid li {
+    width: 110px;
+    height: 185px;
+    overflow: hidden;
+    float: left;
+    border: 1px solid #eee;
+    margin: 0 10px 10px 0;
+    transition: all 0.4s;
+        -moz-transition: all 0.4s;
+        -webkit-transition: all 0.4s;
+        -ms-transition: all 0.4s;
+        -o-transition: all 0.4s;
+}
+
+ul.user-one-col-grid li {
+    height: 145px;
+}
+
+ul.people-one-col-grid li img, ul.user-one-col-grid img {
+    width: 110px;
+}
+
+ul.people-one-col-grid li p, ul.user-one-col-grid p {
+    padding: 0 10px;
+}
+
+ul.people-one-col-grid li:hover, ul.user-one-col-grid li:hover {
+    border: 1px solid #bbb;
+}
+
+ul.people-one-col li {
+    margin: 0 0 10px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+ul.people-one-col li .left {
+    width: 20%;
+    float: left;
+}
+
+ul.people-one-col li .left img {
+    width: 50px;
+}
+
+ul.people-one-col li .right {
+    width: 80%;
+    float: left;
+}
+
+ul.investor li {
+    transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    float: left;
+    margin: 0 1% 1% 0;
+    width: 23%;
+    border: 1px solid #eee;
+}
+
+ul.investor li:hover {
+    border: 1px solid #bbb;
+}
+
+ul.investor li img {
+    width: 100%;
+}
+
+ul.investor-content li {
+    margin: 0 1% 1% 0;
+    width: 12.75%;
+}
+
+ul.discuss-two-col li {
+    border-bottom: 1px dashed #ddd;
+    margin: 0 0 5px 0;
+    padding: 0 0 5px 0;
+    width: 50%;
+    height: 90px;
+    overflow: hidden;
+    float: left;
+}
+
+.comment-box-left {
+    float: left;
+    width: 87%;
+}
+
+.comment-box-right {
+    float: left;
+    text-align: right;
+    width: 13%;
+}
+
+.investor-left {
+    float: left;
+    width: 20%;
+}
+
+.investor-left img {
+    width: 100px;
+    height: auto;
+}
+
+.investor-right {
+    float: left;
+    width: 80%;
+}
+
+.count-large {
+    font-size: 20px;
+}
+
+.rank {
+    font-size: 18px;
+}
+
+.notify-unread-count {
+    font-weight: bold;
+    font-size: 11px;
+    background: #ff8100;
+    color: #fff;
+    padding: 1px 5px;
+    border-radius: 999px;
+}
+
+.footer {
+    margin-top: 30px;
+    padding: 20px 0;
+}
+
+.footer .quote {
+    font-size: 14px;
+    color: #bbb;
+}
+
+.footer-nav, .footer-nav a {
+    color: #666;
+}

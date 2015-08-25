@@ -1,0 +1,6 @@
+注意：
+
+1.新增加表的时候，因为使用注解，一定要在HibernateSessionFactory.xml
+包含bean才能被使用
+2.关于处理maven clean之后，发布不了的问题
+3.地址：http://localhost:8080/car/index.htm

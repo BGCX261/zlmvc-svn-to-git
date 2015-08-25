@@ -1,0 +1,28 @@
+#labels ognl
+object Graphic Navigation Language(对象导航语言)
+静态方法及常量值
+@java.lang.String@format(....)
+@Constant@App_Name
+
+Context conception
+quickly create ActionContext,valueStack,action and then put action into
+ValueStack
+
+OGNL ValueStack (root对象，不需要#，直接可以访问)实现类,OGNLValueStack 
+--parameters
+--request    #request
+--session   #session
+--application #application
+--attr   page-request...顺序搜索
+--OGNLValueStack root变量
+栈顶对象，先从栈顶对象开始find,配合struts使用
+不用标签，使用el表达式
+${el}
+create List/Map collection objects
+list集合对象在值栈栈顶
+scope 不设置，默认存放在ognl
+<s:if test="" in {.....}>
+books.{?#this.price>60}  投影功能
+ActionContext.put request层次
+推荐jstl/el
+

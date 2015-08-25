@@ -1,0 +1,7 @@
+#labels maven
+1.	解压到目录
+2.	M2_HOME设置
+3.	path路径中M2_HOME设置：%M2_HOME%\bin;
+4.	确认Maven的安装：mvn –version
+5.	配置本地Repository:<localRepository>绝对路径
+6.	代理设置

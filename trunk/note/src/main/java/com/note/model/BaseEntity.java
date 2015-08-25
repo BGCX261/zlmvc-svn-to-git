@@ -1,0 +1,63 @@
+package com.note.model;
+
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * 实体类 - 基类
+ * ============================================================================
+ * 版权所有2011-2012 书趣网，并保留所有权利。
+ * ----------------------------------------------------------------------------
+ * 官方网站：http://www.shuqoo.com
+ * ============================================================================
+ */
+@MappedSuperclass
+public class BaseEntity implements Serializable {
+
+	private static final long serialVersionUID = -6196679688525232584L;
+
+	private String id;
+
+	@Id
+	@Column(length = 32, nullable = true)
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	@Override
+	public int hashCode() {
+		return id == null ? System.identityHashCode(this) : id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass().getPackage() != obj.getClass().getPackage()) {
+			return false;
+		}
+		final BaseEntity other = (BaseEntity) obj;
+		if (id == null) {
+			if (other.getId() != null) {
+				return false;
+			}
+		} else if (!id.equals(other.getId())) {
+			return false;
+		}
+		return true;
+	}
+}

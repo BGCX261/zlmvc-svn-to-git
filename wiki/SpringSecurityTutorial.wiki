@@ -1,0 +1,210 @@
+#labels spring
+This guide is now obsolete. We recommend you take a look at this tutorial instead.
+
+What You Will Learn
+
+A good way of getting up to speed with Spring Security is to attempt to add it to an existing unsecured application. In this tutorial, we'll use the well-known Spring Petclinic sample application. You'll find out
+
+How to add Spring Security dependencies to a Maven build.
+How to enable web security and protect different URL patterns within an application.
+How to use a simple form-based login to authenticated against an in-memory repository of test users.
+How to enable debug logging for Spring Security.
+How to use method security annotations.
+How to use JSP tags to hide parts of a page which contain unauthorized content.
+Preparation
+
+You will need a servlet container (such as Apache Tomcat) and a general understanding of using Spring without Spring Security. The Petclinic sample itself is part of Spring and should help you learn Spring. We suggest you only try to learn one thing at a time, and start with Spring/Petclinic before Spring Security.
+
+If you're using a command-line subversion client installed, you can checkout the Spring 3.0 Petclinic sample using the following command:
+
+    svn co https://src.springframework.org/svn/spring-samples/petclinic/trunk spring-petclinic
+Alternatively, you can use your IDE's subversion support to check out the source.
+
+This will result in a "spring-petclinic" directory being created in the current working directory.
+
+Petclinic is built using Maven, so you should download and install Maven before proceeding if you don't already have it.
+
+Download the latest Spring Security distribution and unzip the file. After unzipping Spring Security, you'll need to unzip the spring-security-sample-tutorial-3.0.x.war file that you'll find in there, because we need some files that are included within it. After unzipping the war file, you will see a folder called spring-security-samples-tutorial-3.0.x (where "x" is the minor version number).
+
+In the instructions below, we'll refer to the unzipped directory as spring-sec-tutorial (the unzipped WAR, not the original ZIP).
+
+Build and Run the Petclinic application without Spring Security
+
+In order to make sure that you have a stable environment, we'll make sure the Petclinic application works OK to start with.
+
+We use Maven to build the Petclinic WAR file:
+
+cd spring-petclinic
+mvn clean package
+The first build may take some time as Maven downloads the required dependencies. You'll need to have a working internet connection to allow this. If the build completes successfully, you should find a petclinic.war file in the target subdirectory (spring-petclinic/target). Deploy this to your server. For Tomcat, you would copy the WAR file to the <TOMCAT_HOME>/webapps directory. When you start the server, you should be able to point your browser at the URL http://localhost:8080/petclinic/ and see the Petclinic home page:
+
+
+Click on the "Tutorial" link for more information about the application and its architecture.
+
+Securing the Application
+
+We're now ready to add Spring Security.
+
+Adding Spring Security Dependencies to the Build
+
+We first need to make sure the Spring Security Jars (and any required third-party dependencies) are added to the WAR file. Since we are using Maven, this is easy.
+
+From the spring-petclinic directory, open the file pom.xml in your favourite editor and add the following XML to the "dependencies" section (you will see similar elements already there — just slot these in alongside the others).
+<code language="xml">
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>org.springframework.security.web</artifactId>
+        <version>3.0.5.RELEASE</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>org.springframework.security.config</artifactId>
+        <version>3.0.5.RELEASE</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>org.springframework.security.taglibs</artifactId>
+        <version>3.0.5.RELEASE</version>
+    </dependency>
+</code>
+The next time the application is built, these jars will be downloaded and added to the packaged petclinic.war.
+
+Note that Petclinic uses dependencies from the SpringSource bundle repository (which supports OSGi). The dependency names differ from the ones you will see in other Spring Security sample pom.xml files, which obtain their dependencies from the "Maven Central" repository, and where the artifactIds would be spring-security-web and spring-security-config respectively. You can find more information about the different modules within Spring Security and their purpose in the reference manual.
+
+Adding a Spring Security Configuration File
+
+Most applications keep their security configuration separate from the rest of their Spring configuration, so it is usually defined in its own application context file. As a starting point, we'll use the one from the Spring Security sample which we downloaded and unzipped earlier. Copy this to the petclinic WEB-INF directory:
+
+cp spring-sec-tutorial/WEB-INF/applicationContext-security.xml spring-petclinic/src/main/webapp/WEB-INF/
+We need to make some modifications to this file, to make it suitable for use with petclinic. Let's say that the initial requirement is that a user should be able to access the homepage and the static tutorial link without having to authenticate, but that anything else should require that they log in with a username and password. First we edit the URL restrictions. Change the contents of the <http> element to look like this:
+<code language="java">
+    <http use-expressions="true">
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/static/**" filters="none" />
+        <intercept-url pattern="/**" access="isAuthenticated()" />
+        <form-login />
+        <logout />
+    </http>
+</code>
+Here we've granted everyone access to the application root (the home page) and said that all content under /static/ (the tutorial page, css and image files) should be ignored entirely by Spring Security (the use of filters="none" bypasses the Spring Security filter chain). It's a common mistake to accidentally protect resources such as images, javascipt and css, thus preventing them from loading in unprotected pages.
+
+The pattern /** will match all other URLs and the access expression isAuthenticated() means that authentication is required.
+
+The <form-login/> element means that we want to submit a username and password entered in an HTML form in order to authenticate. Since we haven't added any additional attributes to the element, Spring Security will generate a login form when required and configure the necessary internal URLs to handle its submission. It will authenticate against the list of users defined in the bottom part of the file, which are assembled into a simple in-memory repository. In a production application you would use your own authentication repository (such as a database or LDAP server) or integrate with some other system, such as a single sign-on server. Spring Security can be configured or customized to support many different types of authentication.
+
+Update the web.xml File
+
+Spring Security uses servlet filters internally to support its web security features. This means we need some way to link from the web.xml file to the application context (which is where the Spring Security configuration resides). We need to add the applicationContext-security.xm file to the list of context files which Spring uses, and we need to define a filter-mapping
+
+Edit spring-petclinic/src/main/webapp/WEB-INF/web.xml. The "contextConfigLocation" specifies Spring configuration files that should be used by the petclinic application. Locate the "contextConfigLocation" parameter and add a new line into the existing param-value. Now that we are using Spring Security, It should also declare applicationContext-security.xml (Spring config file for Spring Security). The resulting block will look like this:
+
+<code>
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      /WEB-INF/applicationContext-jdbc.xml
+      /WEB-INF/applicationContext-security.xml
+    </param-value>
+</context-param>
+Still inside web.xml, insert the following block of code. It should be inserted right after the /context-param end-tag.
+
+<filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+You can find more information on this in the Reference Manual.
+</code>
+Enable Spring Security debug logging
+
+Spring Security's debug log provides detailed information on how each request is processed and on the behaviour of its internal components. It's essential that you learn to read the logs. They are the most useful source of information in solving any problems that come up and the information they contain will help others to help you if you are stuck and need to post a question to the community forum to ask for help. To enable debug logging, edit the file src/main/resources/log4j.properties and add the following line to the end
+
+log4j.logger.org.springframework.security=DEBUG
+You should also un-comment the Log4jConfigListener in web.xml:
+
+<listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+</listener>
+Make a note of what information is written to the log as you change from page to page. You should see each request being matched against the patterns and proceeding through each filter in the security filter chain.
+
+Testing
+
+Rebuild and redeploy the web application using the same process as we did earlier. Be careful to ensure that the old Petclinic WAR is replaced by the new Petclinic WAR in your servlet container.
+
+Finally, start your container and visit the home page. Check that you can still access the tutorial link. If you try either the "Find owner" or "Display all veterinarians" links your request should be intercepted and you will be forced to login. You can now log in using any of the usernames and passwords that are documented at the end of the applicationContext-security.xml file.
+
+Adding a logout link
+
+To make it easier to experiment, users should be able to log out of the application. Edit spring-petclinic/src/main/webapp/WEB-INF/jsp/footer.jsp and add a new "logout" link, as shown:
+<code>
+  <table class="footer">
+    <tr>
+      <td><a href="<spring:url value="/" htmlEscape="true" />">Home</a></td>
+      <td><a href="<spring:url value="/j_spring_security_logout" htmlEscape="true" />">Logout</a></td>
+      <td align="right"><img src="<spring:url value="/static/images/springsource-logo.png" htmlEscape="true" />" alt="Sponsored by SpringSource"/></td>
+    </tr>
+  </table>
+
+  </div>
+</body>
+
+</html>
+</code>
+The /j_spring_security_logout URL is supported by the <logout /> element which we added to the security configuration.
+
+We now have a simple secured application running but we've only scratched the surface of what you can achieve using Spring Security. If you have a look at the namespace chapter in the manual, you will find other things you can do to experiment with the configuration we already have. For example, you could
+
+Create a custom login page.
+Authenticate against a user database or an LDAP server.
+Switch from using a login page to using Basic Authentication (RFC 2617).
+Experiment with different authorization expressions.
+Optional Bonus: Securing the Middle Tier
+
+We now have our we requests secured, but let's say that we want to only allow a user with ROLE_SUPERVISOR to be allowed to create new visits. We could (and should) hide the "Add Visit" links for a user who doesn't have the right to click on them, but that would't stop a malicious user from submitting forged requests which will still be accepted by the back end. The most powerful way to prevent access to application functionality is to add security to the service layer. This is much more robust than configuring everything in terms of URLs.
+
+Enabling Method Security
+
+The Petclinic functionality is defined by a single Java interface org.springframework.samples.petclinic.Clinic. How do we go about securing it? There is more than one way, but we'll look at using an annotation on the secured method. First, let's make sure method security is enabled. Take a look at the spring-petclinic/src/main/webapp/WEB-INF/applicationContext-security.xml file again and notice the element which looks like this:
+
+    <global-method-security pre-post-annotations="enabled" />
+This is enabling the use of Spring Security 3.0 annotations @PreAuthorize, @PreFilter etc., which can be applied to methods on your Spring beans. They can be used to apply authorization rules using simple expression values (similar to be web expressions, but more powerful). Add an import org.springframework.security.access.prepost.* to the Clinic interface (src/main/java/org/springframework/security/samples/petclinic/Clinic.java) and the following annotation to the storeVisit method:
+
+    @PreAuthorize("hasRole('ROLE_SUPERVISOR')")
+    void storeVisit(Visit visit) throws DataAccessException;
+Rebuild and redeploy your web application.
+
+Click on "Find owners"
+Login as "peter" who does not have the "ROLE_SUPERVISOR" role.
+Keep the "last name" field blank and validate
+Select one owner in the list
+Click on "add visit"
+Add a description and validate
+Access should be denied. Now log out and try "rod", who has ROLE_SUPERVISOR. It should be working.
+
+The Spring Security JSP Tag Library
+
+To clean things up a bit, you might want to wrap up by hiding the "Add Visit" links unless you are authorized to use them. Spring Security provides a tag library to help you do that. Edit spring-petclinic/src/main/webapp/WEB-INF/jsp/owners/show.jsp. Add the following line to the top of the file:
+
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+Next, scroll down and find the link to "Add visit". Modify it as follows:
+<code language="xml">
+<sec:authorize access="hasRole('ROLE_SUPERVISOR')">
+        <td>
+          <spring:url value="{ownerId}/pets/{petId}/visits/new" var="visitUrl">
+            <spring:param name="ownerId" value="${owner.id}"/>
+            <spring:param name="petId" value="${pet.id}"/>
+          </spring:url>
+          <a href="${fn:escapeXml(visitUrl)}">Add Visit</a>
+        </td>
+</sec:authorize>
+</code>
+If you rebuild/deploy and log in as "peter" again, the link should be missing.
+
+What now?
+
+These steps can be applied to your own application and you may already feel confident enough to start. We suggest that you also review the "Getting Started" steps. These also include time estimates for each step so you can plan your activities.
+
+http://static.springsource.org/spring-security/site/petclinic-tutorial.html

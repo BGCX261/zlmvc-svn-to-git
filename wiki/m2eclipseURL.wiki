@@ -1,0 +1,2 @@
+#labels maven
+http://m2eclipse.sonatype.org/sites/m2e/
